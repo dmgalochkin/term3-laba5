@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.23)
 
-set(PROJECT_NAME term3-laba3)
+set(PROJECT_NAME term3-laba5)
 project(${PROJECT_NAME})
 
 set(application main)
