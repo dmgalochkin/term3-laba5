@@ -5,9 +5,6 @@
 
 int main()
 {
-    std::cout << "=== Демонстрация работы TList ===" << std::endl;
-    std::cout << std::endl;
-    
     TList<int> list;
     std::cout << "1. Создан пустой список: " << list << std::endl;
     
