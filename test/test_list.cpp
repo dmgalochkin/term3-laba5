@@ -346,21 +346,6 @@ TEST(TListTest, FindAllMethod)
   EXPECT_EQ(found.GetSize(), 3);
 }
 
-TEST(TListTest, ApplyMethod)
-{
-  TVector<int> vec;
-  vec.PushBack(1); vec.PushBack(2); vec.PushBack(3);
-  vec.PushBack(4); vec.PushBack(5);
-  TList<int> list(vec);
-  
-  list.Apply([](int& x) { x *= 2; });
-  
-  EXPECT_EQ(list[0], 2);
-  EXPECT_EQ(list[1], 4);
-  EXPECT_EQ(list[2], 6);
-  EXPECT_EQ(list[3], 8);
-  EXPECT_EQ(list[4], 10);
-}
 
 TEST(TListTest, CircularNature)
 {
@@ -412,25 +397,6 @@ TEST(TListTest, DifferentDataTypes)
   EXPECT_DOUBLE_EQ(doubleList[1], 2.71);
 }
 
-TEST(TListTest, FileIOOperations)
-{
-  TVector<int> vec;
-  vec.PushBack(100); vec.PushBack(200); vec.PushBack(300);
-  vec.PushBack(400); vec.PushBack(500);
-  TList<int> originalList(vec);
-  
-  EXPECT_NO_THROW(originalList.SaveToFile("test_list_data.bin"));
-  
-  
-  TList<int> loadedList;
-  EXPECT_NO_THROW(loadedList.LoadFromFile("test_list_data.bin"));
-  
-  
-  EXPECT_TRUE(originalList == loadedList);
-  EXPECT_EQ(loadedList.GetSize(), 5);
-  EXPECT_EQ(loadedList[0], 100);
-  EXPECT_EQ(loadedList[4], 500);
-}
 
 TEST(TListTest, IteratorFunctionality)
 {

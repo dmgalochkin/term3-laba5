@@ -1,7 +1,6 @@
 #pragma once
 #include <iostream>
 #include <fstream>
-#include <functional>
 #include <stdexcept>
 #include "TVector.hpp"
 
@@ -57,7 +56,6 @@ public:
 
   size_t Count(const T& value) const;
   TList<TListNode<T>*> FindAll(const T& value) const;
-  void Apply(std::function<void(T&)> func);
   
   void SaveToFile(const std::string& filename) const;
   void LoadFromFile(const std::string& filename);
@@ -468,37 +466,24 @@ TList<TListNode<T>*> TList<T>::FindAll(const T& value) const
   return result;
 }
 
-template<typename T>
-void TList<T>::Apply(std::function<void(T&)> func)
-{
-  if (!IsEmpty())
-  {
-    TListNode<T>* current = head;
-    do
-    {
-      func(current->data);
-      current = current->next;
-    } while (current != head);
-  }
-}
 
 template<typename T>
 void TList<T>::SaveToFile(const std::string& filename) const
 {
-  std::ofstream file(filename, std::ios::binary);
+  std::ofstream file(filename);
   if (!file)
   {
     throw std::runtime_error("Cannot open file for writing");
   }
 
-  file.write(reinterpret_cast<const char*>(&size), sizeof(size));
+  file << size << std::endl;
   
   if (!IsEmpty())
   {
     TListNode<T>* current = head;
     do
     {
-      file.write(reinterpret_cast<const char*>(&current->data), sizeof(T));
+      file << current->data << std::endl;
       current = current->next;
     } while (current != head);
   }
@@ -508,19 +493,19 @@ template<typename T>
 void TList<T>::LoadFromFile(const std::string& filename)
 {
   Clear();
-  std::ifstream file(filename, std::ios::binary);
+  std::ifstream file(filename);
   if (!file)
   {
     throw std::runtime_error("Cannot open file for reading");
   }
 
   size_t fileSize;
-  file.read(reinterpret_cast<char*>(&fileSize), sizeof(fileSize));
+  file >> fileSize;
   
   for (size_t i = 0; i < fileSize; i++)
   {
     T value;
-    file.read(reinterpret_cast<char*>(&value), sizeof(T));
+    file >> value;
     PushBack(value);
   }
 }
